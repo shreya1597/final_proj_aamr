@@ -1,0 +1,21 @@
+<launch>
+
+  <arg name="model_file" default="model.sdf"/>
+  <arg name="map_file" default="map.yaml"/>
+
+  <param name="/use_sim_time" value="true" />
+
+  <!-- start world -->
+  <node name="gazebo" pkg="gazebo_ros" type="gazebo"
+   args="$(find turtlebot3_gazebo)/worlds/empty.world" respawn="false" output="screen" />
+
+  <!-- include our robots -->
+  <include file="$(find multi_turtlebot)/launch/robots.launch">
+    <arg name="map_file" value="$(arg map_file)"/>
+  </include>
+
+  <!-- Spawn World  -->
+  <node name="spawn_world" pkg="gazebo_ros" type="spawn_model"
+   args="-sdf -model amr_arena -file $(arg model_file) -x 3.0 -y -4.0" respawn="false" output="screen" />
+
+</launch>
